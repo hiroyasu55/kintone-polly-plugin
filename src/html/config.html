@@ -1,0 +1,170 @@
+<div id="app" class="container">
+	<form @submit.prevent="onsubmit">
+		<div class="row kintoneplugin-row">
+			<div class="col">
+				<label class="kintoneplugin-label">
+					Amazon Polly設定
+				</label>
+			</div>
+		</div>
+		<div class="form-group row kintoneplugin-row">
+			<div class="col-sm-4">
+				アクセスキー
+				<span class="kintoneplugin-require">*</span>
+			</div>
+			<div class="col-sm-6 kintoneplugin-input-outer">
+				<input type="text" class="form-control kintoneplugin-input-text"
+					v-model="config.accessKeyId" required />
+			</div>
+		</div>
+		<div class="row kintoneplugin-row">
+			<div class="col-sm-4">
+				シークレットキー
+				<span class="kintoneplugin-require">*</span>
+			</div>
+			<div class="col-sm-6 kintoneplugin-input-outer">
+				<input type="password" class="form-control kintoneplugin-input-text"
+					v-model="config.secretAccessKey" required />
+			</div>
+		</div>
+		<div class="row kintoneplugin-row">
+			<div class="col-sm-4">
+				リージョン
+				<span class="kintoneplugin-require">*</span>
+			</div>
+			<div class="col-sm-5 kintoneplugin-select-outer">
+				<div class="kintoneplugin-select">
+					<select class="form-control" v-model="config.region" required>
+						<option v-for="region in regions" v-bind:value="region.code">
+					    {{ region.name }}
+					  </option>
+					</select>
+				</div>
+			</div>
+		</div>
+
+		<div class="row kintoneplugin-row">
+			<div class="col">
+				<label class="kintoneplugin-label">
+					音声設定
+				</label>
+			</div>
+		</div>
+		<div class="row kintoneplugin-row">
+			<div class="col-sm-4">
+				話者
+			</div>
+			<div class="col-sm-5 kintoneplugin-select-outer">
+				<div class="kintoneplugin-select">
+					<select class="form-control" v-model="config.VoiceId" required>
+						<option v-for="voice in voices" v-bind:value="voice.code">
+					    {{ voice.name }}
+					  </option>
+					</select>
+				</div>
+			</div>
+		</div>
+		<div class="row kintoneplugin-row">
+			<div class="col-sm-4">
+				サンプリングレート
+			</div>
+			<div class="col-sm-5 kintoneplugin-select-outer">
+				<div class="kintoneplugin-select">
+					<select class="form-control" v-model="config.SampleRate" required>
+						<option v-for="rate in sampleRates" v-bind:value="rate.code">
+					    {{ rate.name }}
+					  </option>
+					</select>
+				</div>
+			</div>
+		</div>
+		<div class="row kintoneplugin-row">
+			<div class="col-sm-4">
+				速度
+			</div>
+			<div class="col-sm-5 kintoneplugin-select-outer">
+				<div class="kintoneplugin-select">
+					<select class="form-control" v-model="config.rate" required>
+						<option v-for="rate in rates" v-bind:value="rate.code">
+					    {{ rate.name }}
+					  </option>
+					</select>
+				</div>
+			</div>
+		</div>
+		<div class="row kintoneplugin-row">
+			<div class="col-sm-4">
+				高さ
+			</div>
+			<div class="col-sm-5 kintoneplugin-select-outer">
+				<div class="kintoneplugin-select">
+					<select class="form-control" v-model="config.pitch" required>
+						<option v-for="pitch in pitches" v-bind:value="pitch.code">
+					    {{ pitch.name }}
+					  </option>
+					</select>
+				</div>
+			</div>
+		</div>
+
+		<div class="row kintoneplugin-row">
+			<div class="col">
+				<label class="kintoneplugin-label">
+					フィールド設定
+				</label>
+			</div>
+		</div>
+		<div class="row kintoneplugin-row">
+			<div class="col-sm-4">
+				読み上げるテキストフィールド
+				<span class="kintoneplugin-require">*</span>
+			</div>
+			<div class="col-sm-4 kintoneplugin-select-outer">
+				<div class="kintoneplugin-select">
+					<select class="form-control" v-model="config.textField" required>
+						<option v-for="field in textFields" v-bind:value="field.code">
+					    {{ field.label }}
+					  </option>
+					</select>
+				</div>
+			</div>
+		</div>
+		<div class="row kintoneplugin-row">
+			<div class="col-sm-4">
+				ファイルを保存するフィールド
+				<span class="kintoneplugin-require">*</span>
+			</div>
+			<div class="col-sm-4 kintoneplugin-select-outer">
+				<div class="kintoneplugin-select">
+					<select class="form-control" v-model="config.fileField" required>
+						<option v-for="field in fileFields" v-bind:value="field.code">
+					    {{ field.label }}
+					  </option>
+					</select>
+				</div>
+			</div>
+		</div>
+		<div class="row kintoneplugin-row">
+			<div class="col-sm-4">
+				音声コントローラーを配置するスペースの要素ID
+				<span class="kintoneplugin-require">*</span>
+			</div>
+			<div class="col-sm-4 kintoneplugin-input-outer">
+				<input type="text" class="form-control kintoneplugin-input-text"
+					v-model="config.controlsSpace" required />
+			</div>
+		</div>
+		<div class="row kintoneplugin-row">
+			<div class="col form-group">
+				<button type="submit" class="kintoneplugin-button-dialog-ok">
+					保存
+				</button>
+				<button type="button" class="kintoneplugin-button-dialog-cancel"
+				  v-on:click="history.back()">
+					キャンセル
+				</button>
+			</div>
+		</div>
+	</form>
+	{{message}}
+</div>

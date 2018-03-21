@@ -1,0 +1,8 @@
+rules:
+  #no-css-comments: 0
+  hex-length: 0
+  #single-line-per-selector: 0
+  #leading-zero: 0
+  no-color-literals: 0
+  #placeholder-in-extend: 0
+  property-sort-order: 0

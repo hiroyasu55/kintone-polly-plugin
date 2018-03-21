@@ -1,0 +1,49 @@
+{
+  "manifest_version": 1,
+  "version": 1,
+  "type": "APP",
+  "name": {
+    "en": "Sentence reader plugin",
+    "ja": "文章読み上げプラグイン"
+  },
+  "description": {
+    "en": "Sentence reader plugin using Amazon Polly",
+    "ja": "Amazon Pollyを利用した文章読み上げプラグイン"
+  },
+  "icon": "image/icon.png",
+  "homepage_url": {
+    "ja": "https://github.com/logicheart/kintone-polly-plugin"
+  },
+  "desktop": {
+    "js": [
+      "https://sdk.amazonaws.com/js/aws-sdk-2.211.0.min.js",
+      "https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js",
+      "js/desktop.js"
+    ],
+    "css": [
+      "https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css",
+      "https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css",
+      "css/desktop.css"
+    ]
+  },
+  "config": {
+    "html": "html/config.html",
+    "js": [
+      "https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js",
+      "js/config.js"
+    ],
+    "css": [
+      "https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css",
+      "css/51-modern-default.css",
+      "css/config.css"
+    ],
+    "required_params": [
+      "accessKeyId",
+      "secretAccessKey",
+      "region",
+      "textField",
+      "fileField",
+      "controlsSpace"
+    ]
+  }
+}
