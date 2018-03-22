@@ -38,12 +38,6 @@
       "css/config.css"
     ],
     "required_params": [
-      "accessKeyId",
-      "secretAccessKey",
-      "region",
-      "textField",
-      "fileField",
-      "controlsSpace"
     ]
   }
 }

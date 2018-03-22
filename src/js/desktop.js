@@ -5,9 +5,12 @@ import Polly from '@/models/Polly.js'
 const pluginId = kintone.$PLUGIN_ID
 const config = Object.assign({
   apiVersion: '2016-06-10',
-  region: 'ap-northeast-1'
+  region: 'ap-northeast-1',
+  VoiceId: 'Mizuki',
+  SampleRate: '22050',
+  pitch: 'medium',
+  rate: 'medium'
 }, kintone.plugin.app.getConfig(pluginId) || {})
-// console.log('config=%o', config)
 
 const HTML_TEMPLATE = `
 <div class="container controls">
@@ -53,8 +56,9 @@ const HTML_TEMPLATE = `
 </div>
 `
 
-kintone.events.on('app.record.detail.show', event => {
+kintone.events.on('app.record.detail.show', (event) => {
   // console.log('plugin:polly event=%s', event.type)
+  // console.log('config=%o', config)
   const record = event.record
 
   if (!config.controlsSpace) {
@@ -117,8 +121,7 @@ kintone.events.on('app.record.detail.show', event => {
 kintone.events.on([
   'app.record.create.show', 'app.record.edit.show'
 ], (event) => {
-  console.log('plugin:polly event=%s', event.type)
-
+  // console.log('config=%o', config)
   const controlsSpace = kintone.app.record.getSpaceElement(config.controlsSpace)
   if (controlsSpace) {
     controlsSpace.parentNode.style.display = 'none'
@@ -130,7 +133,6 @@ kintone.events.on([
 kintone.events.on([
   'app.record.create.submit.success', 'app.record.edit.submit.success'
 ], (event) => {
-  console.log('plugin:polly event=%s', event.type)
   const record = event.record
 
   if (!config.fileField) return event
@@ -147,7 +149,7 @@ kintone.events.on([
       }
     }
     return kintoneUtility.rest.putRecord(params)
-    .then(response => {
+    .then(resp => {
       return event
     })
   }
@@ -157,9 +159,17 @@ kintone.events.on([
     secretAccessKey: config.secretAccessKey,
     apiVersion: config.apiVersion,
     region: config.region
+  }, {
+    VoiceId: config.VoiceId,
+    SampleRate: config.SampleRate,
+    pitch: config.pitch,
+    rate: config.rate
   })
 
-  return polly.generateAudioStream(text)
+  return polly.convertTextToSsml(text)
+  .then(ssmlText => {
+    return polly.generateAudioStream(ssmlText)
+  })
   .then(data => {
     const fileName = `${event.appId}_${event.recordId}.mp3`
     return kintoneUtility.rest.uploadFile({
@@ -167,21 +177,25 @@ kintone.events.on([
       blob: new Blob([data], { type: 'audio/mpeg' })
     })
   })
-  .then(response => {
+  .then(resp => {
     const params = {
       app: event.appId,
       id: event.recordId,
       record: {
         [config.fileField]: {
           value: [
-            { fileKey: response.fileKey }
+            { fileKey: resp.fileKey }
           ]
         }
       }
     }
     return kintoneUtility.rest.putRecord(params)
   })
-  .then(response => {
+  .then(resp => {
     return event
+  })
+  .catch(err => {
+    console.error(err)
+    alert('音声変換に失敗しました。')
   })
 })

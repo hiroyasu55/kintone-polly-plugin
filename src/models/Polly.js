@@ -1,20 +1,17 @@
 class Polly {
-  constructor (options) {
+  constructor (params, options) {
     this.options = Object.assign({
       OutputFormat: 'mp3',
+      LexiconNames: [],
       TextType: 'ssml',
       pitch: 'medium',
       rate: 'medium'
     }, options || {})
 
-    this.polly = new AWS.Polly({
-      accessKeyId: this.options.accessKeyId,
-      secretAccessKey: this.options.secretAccessKey,
-      apiVersion: this.options.apiVersion || '2016-06-10',
-      region: this.options.region || 'ap-northeast-1'
-    })
-
-    console.log('Polly options=%o', this.options)
+    this.polly = new AWS.Polly(Object.assign({
+      apiVersion: '2016-06-10',
+      region: 'ap-northeast-1'
+    }, params || {}))
   }
 
   static get regions () {
@@ -55,10 +52,10 @@ class Polly {
   static get ssmlRates () {
     return [
       { code: 'x-low', name: '遅い' },
-      { code: 'low', name: 'やや遅い' },
+      { code: 'slow', name: 'やや遅い' },
       { code: 'medium', name: '普通' },
-      { code: 'high', name: 'やや速い' },
-      { code: 'x-high', name: '速い' }
+      { code: 'fast', name: 'やや速い' },
+      { code: 'x-fast', name: '速い' }
     ]
   }
 
@@ -93,42 +90,36 @@ class Polly {
   convertTextToSsml (text, options) {
     options = Object.assign(this.options, options || {})
 
-    /*
-    speekText = text
-      .replace(/、\n/g, `<break time="${breakTime}" />`)
-      .replace(/。\n/g, `<break time="${breakTime}" />`)
-      .replace(/、/g, `<break time="200ms" />`)
-      .replace(/。/g, `<break time="${breakTime}" />`)
-      .replace(/\n/g, `<break time="${breakTime}" />`)
-    */
-    // const breakTime = '400ms'
-    const ssml = `
+    return Promise.resolve().then(() => {
+      /*
+      const breakTime = '400ms'
+      speekText = text
+        .replace(/、\n/g, `<break time="${breakTime}" />`)
+        .replace(/。\n/g, `<break time="${breakTime}" />`)
+        .replace(/、/g, `<break time="200ms" />`)
+        .replace(/。/g, `<break time="${breakTime}" />`)
+        .replace(/\n/g, `<break time="${breakTime}" />`)
+      */
+      const ssml = `
 <speak xml:lang="ja-JP">
 <prosody pitch="${options.pitch}" rate="${options.rate}">
 ${text}
 </prosody>
 </speak>
 `
-    return ssml
+      return ssml
+    })
   }
 
   generateAudioStream (text, options) {
     options = Object.assign(this.options, options || {})
-
-    let speekText
-    if (options.TextType === 'ssml') {
-      speekText = this.convertTextToSsml(text)
-    } else {
-      speekText = text
-    }
-
     const params = {
       OutputFormat: options.OutputFormat,
       VoiceId: options.VoiceId,
       SampleRate: options.SampleRate,
       TextType: options.TextType,
       LexiconNames: options.LexiconNames,
-      Text: speekText
+      Text: text
     }
     // console.log('params=%o', params)
 

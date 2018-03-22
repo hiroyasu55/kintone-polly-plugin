@@ -19,7 +19,6 @@ const config = {
   fileField: pluginConfig.fileField || '',
   controlsSpace: pluginConfig.controlsSpace || ''
 }
-// console.log('config=%o', config)
 
 new Vue({
   el: '#app',
