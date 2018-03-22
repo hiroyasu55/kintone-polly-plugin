@@ -127,12 +127,6 @@ ${text}
     .then(data => {
       return data.AudioStream
     })
-    .catch(err => {
-      if (err.code === 'InvalidSsmlException') {
-        err.text = speekText
-      }
-      throw err
-    })
   }
 }
 
