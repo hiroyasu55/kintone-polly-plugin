@@ -27,6 +27,7 @@ kintoneのプラグイン追加画面より　release/kintone-polly-plugins.zip 
 ### Setting of plugin
 プラグイン設定画面で各種項目を設定します。
 -   AWS Pollyのアクセスキー/シークレットキー/リージョン
+-   AWS Pollyに登録されたレキシコン名
 -   読み上げ対象のkintoneテキストフィールド
 -   音声ファイルを保存するファイルフィールド
 -   音声コントローラーを表示するスペース（の要素ID）
