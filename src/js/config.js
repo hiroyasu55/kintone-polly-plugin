@@ -11,6 +11,7 @@ const config = {
 
   VoiceId: pluginConfig.VoiceId || 'Mizuki',
   SampleRate: pluginConfig.SampleRate || '22050',
+  LexiconName: pluginConfig.LexiconName || '',
 
   pitch: pluginConfig.pitch || 'medium',
   rate: pluginConfig.rate || 'medium',

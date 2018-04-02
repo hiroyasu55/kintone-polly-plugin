@@ -57,8 +57,6 @@ const HTML_TEMPLATE = `
 `
 
 kintone.events.on('app.record.detail.show', (event) => {
-  // console.log('plugin:polly event=%s', event.type)
-  // console.log('config=%o', config)
   const record = event.record
 
   if (!config.controlsSpace) {
@@ -162,6 +160,7 @@ kintone.events.on([
   }, {
     VoiceId: config.VoiceId,
     SampleRate: config.SampleRate,
+    LexiconNames: config.LexiconName === '' ? [] : [config.LexiconName],
     pitch: config.pitch,
     rate: config.rate
   })

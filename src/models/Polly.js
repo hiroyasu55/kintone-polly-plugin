@@ -69,37 +69,10 @@ class Polly {
     ]
   }
 
-  /*
-  putLexicon (file) {
-    const filepath = path.join(__dirname, file)
-    const pms = {
-      Content: `file://${filepath}`,
-      Name: 'W3C'
-    }
-    return this.polly.putLexicon(pms).promise()
-      .then(result => {
-        return result
-      })
-  }
-  */
-
-  getLexicon (name) {
-    return this.polly.getLexicon({'Name': name}).promise()
-  }
-
   convertTextToSsml (text, options) {
     options = Object.assign(this.options, options || {})
 
     return Promise.resolve().then(() => {
-      /*
-      const breakTime = '400ms'
-      speekText = text
-        .replace(/、\n/g, `<break time="${breakTime}" />`)
-        .replace(/。\n/g, `<break time="${breakTime}" />`)
-        .replace(/、/g, `<break time="200ms" />`)
-        .replace(/。/g, `<break time="${breakTime}" />`)
-        .replace(/\n/g, `<break time="${breakTime}" />`)
-      */
       const ssml = `
 <speak xml:lang="ja-JP">
 <prosody pitch="${options.pitch}" rate="${options.rate}">
@@ -121,7 +94,6 @@ ${text}
       LexiconNames: options.LexiconNames,
       Text: text
     }
-    // console.log('params=%o', params)
 
     return this.polly.synthesizeSpeech(params).promise()
     .then(data => {
